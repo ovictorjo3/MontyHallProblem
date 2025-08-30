@@ -19,7 +19,7 @@ winSound.volume = 0.8;
 
 const loseSound = new Audio();
 loseSound.src = "sons/errou(faustao).mp3"; 
-loseSound.volume = 0.8; 
+loseSound.volume = 0.9; 
 
 function startGame() {
   if (noRepeatMode && lastPrizeDoor !== null) {
