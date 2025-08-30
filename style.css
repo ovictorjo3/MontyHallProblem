@@ -156,9 +156,23 @@ button:disabled {
   margin-top: 40px;
   border-radius: 12px 12px 0 0;
   box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
-  font-size: 1em;
+  font-size: 1.3em;
   position: relative;
   z-index: 10;
+  overflow: hidden;
+}
+
+#credits .footer-hidden {
+  opacity: 0;
+  font-weight: normal;
+  font-size: 1.2em;
+  margin-top: 8px;
+  transition: opacity 0.4s ease;
+  color: #ffdd57;
+}
+
+#credits:hover .footer-hidden {
+  opacity: 1;
 }
 
 #credits a {
