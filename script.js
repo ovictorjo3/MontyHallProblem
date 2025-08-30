@@ -1,4 +1,7 @@
 let prizeDoor;
+let lastPrizeDoor = null;   
+let noRepeatMode = false;   
+
 let chosenDoor = null;
 let revealedDoor = null;
 let phase = 'picking'; 
@@ -8,7 +11,7 @@ const doors = document.querySelectorAll(".door");
 const message = document.getElementById("message");
 const restartBtn = document.getElementById("restart");
 const instruction = document.getElementById("instruction");
-
+const modeSwitchBtn = document.getElementById("modeSwitch");
 
 const winSound = new Audio();
 winSound.src = "sons/ganhou.mp3"; 
@@ -18,10 +21,20 @@ const loseSound = new Audio();
 loseSound.src = "sons/errou(faustao).mp3"; 
 loseSound.volume = 0.8; 
 
-
 function startGame() {
-  prizeDoor = Math.floor(Math.random() * 3);
-  console.log("Fusca escondido na porta:", prizeDoor + 1);
+  if (noRepeatMode && lastPrizeDoor !== null) {
+    // evita repetir a porta premiada
+    do {
+      prizeDoor = Math.floor(Math.random() * 3);
+    } while (prizeDoor === lastPrizeDoor);
+  } else {
+    // modo clássico
+    prizeDoor = Math.floor(Math.random() * 3);
+  }
+
+  lastPrizeDoor = prizeDoor;
+  console.log("🚗 Fusca escondido na porta:", prizeDoor + 1);
+
   chosenDoor = null;
   revealedDoor = null;
   phase = 'picking';
@@ -39,8 +52,8 @@ function startGame() {
     
     if (door.dataset.index === undefined) door.dataset.index = i;
   });
+  modeSwitchBtn.disabled = true;
 }
-
 
 function onDoorClick(e) {
   const door = e.currentTarget;
@@ -48,10 +61,8 @@ function onDoorClick(e) {
 
   if (gameOver) return;
 
-  // --- PRIMEIRA ESCOLHA ---
   if (phase === 'picking') {
     chosenDoor = i;
-
     doors[chosenDoor].style.backgroundColor = "#a0e6a0";
 
     do {
@@ -79,13 +90,11 @@ function onDoorClick(e) {
     return;
   }
 
-  
   if (phase === 'decide') {
     if (i === revealedDoor) return;
 
     const finalChoice = i;
 
-    
     if (finalChoice === chosenDoor) {
       instruction.textContent = `Você manteve sua escolha na porta ${finalChoice + 1}`;
     } else {
@@ -96,7 +105,6 @@ function onDoorClick(e) {
     return;
   }
 }
-
 
 function endGame(finalChoice) {
   phase = 'ended';
@@ -113,7 +121,6 @@ function endGame(finalChoice) {
     door.style.border = "3px solid transparent";
   });
 
-  
   const acao = (finalChoice === chosenDoor) ? "mantendo" : "trocando";
 
   if (finalChoice === prizeDoor) {
@@ -125,8 +132,8 @@ function endGame(finalChoice) {
   }
 
   restartBtn.style.display = "inline-block";
+  modeSwitchBtn.disabled = false;
 }
-
 
 function playWinSound() {
   try {
@@ -161,7 +168,17 @@ function stopAllSounds() {
   loseSound.currentTime = 0;
 }
 
+
+modeSwitchBtn.addEventListener("click", () => {
+  noRepeatMode = !noRepeatMode;
+  modeSwitchBtn.textContent = noRepeatMode 
+    ? "Modo: NÃO REPETE porta" 
+    : "Modo: CLÁSSICO (aleatório)";
+});
+
+
 doors.forEach(door => door.addEventListener("click", onDoorClick));
 restartBtn.addEventListener("click", startGame);
+
 
 startGame();
