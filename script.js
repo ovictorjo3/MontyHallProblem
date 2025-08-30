@@ -21,6 +21,7 @@ loseSound.volume = 0.8;
 
 function startGame() {
   prizeDoor = Math.floor(Math.random() * 3);
+  console.log("Fusca escondido na porta:", prizeDoor + 1);
   chosenDoor = null;
   revealedDoor = null;
   phase = 'picking';
