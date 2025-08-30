@@ -147,6 +147,30 @@ button:disabled {
   animation: pulse 1.5s infinite;
 }
 
+#credits {
+  background-color: #0077cc;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 12px 20px;
+  margin-top: 40px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+  font-size: 1em;
+  position: relative;
+  z-index: 10;
+}
+
+#credits a {
+  color: #ffdd57;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#credits a:hover {
+  text-decoration: underline;
+}
+
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }

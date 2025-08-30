@@ -33,7 +33,7 @@ function startGame() {
   }
 
   lastPrizeDoor = prizeDoor;
-  console.log("🚗 Fusca escondido na porta:", prizeDoor + 1);
+  console.log("Fusca escondido na porta:", prizeDoor + 1);
 
   chosenDoor = null;
   revealedDoor = null;
