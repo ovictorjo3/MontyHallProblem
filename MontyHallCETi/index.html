@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Problema de Monty Hall</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Problema de Monty Hall</h1>
+  <p id="instruction">Escolha uma porta clicando nela!</p>
+
+  <div id="game">
+    <div class="door-container">
+      <div class="door" data-index="0">
+        <img src="imagens/porta.png" alt="Porta 1">
+      </div>
+      <p class="door-label">Porta 1</p>
+    </div>
+
+    <div class="door-container">
+      <div class="door" data-index="1">
+        <img src="imagens/porta.png" alt="Porta 2">
+      </div>
+      <p class="door-label">Porta 2</p>
+    </div>
+
+    <div class="door-container">
+      <div class="door" data-index="2">
+        <img src="imagens/porta.png" alt="Porta 3">
+      </div>
+      <p class="door-label">Porta 3</p>
+    </div>
+  </div>
+
+  <div id="message"></div>
+  <button id="restart" style="display:none;">Reiniciar</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
