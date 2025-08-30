@@ -15,7 +15,7 @@ winSound.src = "sons/ganhou.mp3";
 winSound.volume = 0.8; 
 
 const loseSound = new Audio();
-loseSound.src = "sons/perdeu.mp3"; 
+loseSound.src = "sons/errou(faustao).mp3"; 
 loseSound.volume = 0.8; 
 
 
