@@ -116,7 +116,7 @@ function endGame(finalChoice) {
   const acao = (finalChoice === chosenDoor) ? "mantendo" : "trocando";
 
   if (finalChoice === prizeDoor) {
-    message.textContent = `Você ganhou o CARRO!`;
+    message.textContent = `Parabéns! Você encontrou o carro.`;
     playWinSound();
   } else {
     message.textContent = `Você perdeu ${acao} para a porta ${finalChoice + 1}. O carro estava na porta ${prizeDoor + 1}.`;
