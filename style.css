@@ -125,24 +125,30 @@ button:disabled {
 }
 
 #message {
-  margin: 25px;
+  display: none;            /* não aparece no começo */
+  margin: 25px auto;
   font-size: 1.3em;
   font-weight: bold;
   color: #222;
-  min-height: 40px;
-  padding: 12px;
+  padding: 12px 18px;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.7);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); 
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+
+.door.active {
+  border: 3px solid #1e90ff; /* azul */
+  box-shadow: 0 0 18px rgba(30,144,255,0.5);
 }
 
 .door.revealed {
-  border: 3px solid #ff4444;
+  border: 3px solid #ff4444; /* vermelho */
   box-shadow: 0 0 20px rgba(255,68,68,0.5);
 }
 
 .door.winner {
-  border: 3px solid #00cc66;
+  border: 3px solid #00cc66; /* verde */
   box-shadow: 0 0 25px rgba(0,204,102,0.6);
   animation: pulse 1.5s infinite;
 }
@@ -192,6 +198,12 @@ button:disabled {
   100% { text-shadow: 0 0 5px #ffdd57, 0 0 10px #ffdd57; }
 }
 
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 #credits:hover .footer-hidden {
   animation: glow 1.5s infinite;
 }
@@ -204,12 +216,6 @@ button:disabled {
 
 #credits a:hover {
   text-decoration: underline;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
 }
 
 /* Responsividade */

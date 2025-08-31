@@ -1,193 +1,119 @@
-let prizeDoor;
-let lastPrizeDoor = null;   
-let lastPrizeDoorPrev = null; 
-let noRepeatMode = false;   
-
-let chosenDoor = null;
-let revealedDoor = null;
-let phase = 'picking'; 
-let gameOver = false;
-
 const doors = document.querySelectorAll(".door");
-const message = document.getElementById("message");
-const restartBtn = document.getElementById("restart");
 const instruction = document.getElementById("instruction");
-const modeSwitchBtn = document.getElementById("modeSwitch");
+const message = document.getElementById("message");
+const restartButton = document.getElementById("restart");
+const modeSwitch = document.getElementById("modeSwitch");
 
-const winSound = new Audio();
-winSound.src = "sons/ganhou.mp3"; 
-winSound.volume = 0.8; 
+let carPosition;
+let selectedDoor = null;
+let revealedDoor = null;
+let gameEnded = false;
+let mode = "classic"; // "classic" ou "no-repeat"
+let lastCarPosition = null;
 
-const loseSound = new Audio();
-loseSound.src = "sons/errou(faustao).mp3"; 
-loseSound.volume = 0.9; 
-
-function startGame() {
-  if (noRepeatMode && lastPrizeDoor !== null) {
-    
-    do {
-      prizeDoor = Math.floor(Math.random() * 3);
-    } while (prizeDoor === lastPrizeDoor);
-  } else {
-    // modo clássico
-    prizeDoor = Math.floor(Math.random() * 3);
-  }
-
-  lastPrizeDoor = prizeDoor;
-  console.log("Fusca escondido na porta:", prizeDoor + 1);
-
-  chosenDoor = null;
+function initGame() {
+  gameEnded = false;
+  selectedDoor = null;
   revealedDoor = null;
-  phase = 'picking';
-  gameOver = false;
 
+  doors.forEach(door => {
+    door.classList.remove("active", "revealed", "winner");
+    door.innerHTML = `<img src="imagens/porta.png" alt="Porta">`;
+  });
+
+  message.style.display = "none";   // <-- oculta no início
   message.textContent = "";
   instruction.textContent = "Escolha uma porta clicando nela!";
-  restartBtn.style.display = "none";
+  restartButton.style.display = "none";
 
-  doors.forEach((door, i) => {
-    door.style.backgroundColor = "white";
-    door.querySelector("img").src = "imagens/porta.png";
-    door.style.pointerEvents = "auto";
-    door.style.border = "3px solid transparent";
-    
-    if (door.dataset.index === undefined) door.dataset.index = i;
-  });
-  modeSwitchBtn.disabled = true;
+  // Definir posição do carro
+  if (mode === "classic") {
+    carPosition = Math.floor(Math.random() * 3);
+  } else {
+    do {
+      carPosition = Math.floor(Math.random() * 3);
+    } while (carPosition === lastCarPosition);
+    lastCarPosition = carPosition;
+  }
 }
 
-function onDoorClick(e) {
-  const door = e.currentTarget;
-  const i = parseInt(door.dataset.index, 10);
+function revealGoatDoor() {
+  const possibleDoors = [0, 1, 2].filter(
+    d => d !== carPosition && d !== selectedDoor
+  );
+  revealedDoor = possibleDoors[Math.floor(Math.random() * possibleDoors.length)];
 
-  if (gameOver) return;
+  const door = doors[revealedDoor];
+  door.classList.add("revealed");
+  door.innerHTML = `<img src="imagens/cabra.png" alt="Cabra">`;
 
-  if (phase === 'picking') {
-    chosenDoor = i;
-    doors[chosenDoor].style.backgroundColor = "#a0e6a0";
+  // encontrar a outra porta que sobrou
+  const otherDoor = [0, 1, 2].find(
+    d => d !== selectedDoor && d !== revealedDoor
+  );
 
-    let availableDoors = [0,1,2].filter(d => d !== chosenDoor && d !== prizeDoor);
-
-    // Forçar cabra na porta que tinha o carro na rodada anterior
-    if (noRepeatMode && lastPrizeDoorPrev !== null && availableDoors.includes(lastPrizeDoorPrev)) {
-      revealedDoor = lastPrizeDoorPrev; 
-    } else {
-      revealedDoor = availableDoors[Math.floor(Math.random() * availableDoors.length)];
-    }
-
-    doors[revealedDoor].style.backgroundColor = "#f28c8c";
-    doors[revealedDoor].querySelector("img").src = "imagens/cabra.png";
-    doors[revealedDoor].style.pointerEvents = "none"; 
-
-    const remainingDoor = [0, 1, 2].find(idx => idx !== chosenDoor && idx !== revealedDoor);
-    doors[remainingDoor].style.backgroundColor = "#a0e6a0";
-
-    instruction.textContent = `Você escolheu a porta ${chosenDoor + 1}`;
-    message.textContent = `O apresentador abriu a porta ${revealedDoor + 1}! Clique na sua porta para manter ou na outra para trocar.`;
-
-    doors[chosenDoor].style.border = "3px solid #1e90ff";
-    doors[remainingDoor].style.border = "3px solid #1e90ff";
-
-    doors.forEach((d, idx) => {
-      d.style.pointerEvents = (idx === chosenDoor || idx === remainingDoor) ? "auto" : "none";
-    });
-
-    phase = 'decide';
-    return;
-  }
-
-  if (phase === 'decide') {
-    if (i === revealedDoor) return;
-
-    const finalChoice = i;
-
-    if (finalChoice === chosenDoor) {
-      instruction.textContent = `Você manteve sua escolha na porta ${finalChoice + 1}`;
-    } else {
-      instruction.textContent = `Você trocou para a porta ${finalChoice + 1}`;
-    }
-
-    endGame(finalChoice);
-    return;
-  }
+  instruction.textContent = `Você quer manter a sua escolha na Porta ${selectedDoor + 1}, ou trocar para a Porta ${otherDoor + 1}?`;
 }
 
 function endGame(finalChoice) {
-  phase = 'ended';
-  gameOver = true;
+  gameEnded = true;
 
-  doors.forEach((door, idx) => {
-    const img = door.querySelector("img");
-    if (idx === prizeDoor) {
-      img.src = "imagens/carro.png";
+  doors.forEach((door, index) => {
+    door.classList.remove("active", "winner", "revealed");
+
+    if (index === carPosition) {
+      door.classList.add("winner"); // verde
+      door.innerHTML = `<img src="imagens/carro.png" alt="Carro">`;
     } else {
-      img.src = "imagens/cabra.png";
+      door.classList.add("revealed"); // vermelho
+      door.innerHTML = `<img src="imagens/cabra.png" alt="Cabra">`;
     }
-    door.style.pointerEvents = "none";
-    door.style.border = "3px solid transparent";
   });
 
-  const acao = (finalChoice === chosenDoor) ? "mantendo" : "trocando";
-
-  if (finalChoice === prizeDoor) {
-    message.textContent = `Parabéns! Você encontrou o fusca :-)`;
-    playWinSound();
+  if (finalChoice === carPosition) {
+    message.textContent = "Você ganhou o carro!";
+    playAudio("sons/silvio.mp3");
   } else {
-    message.textContent = `Você perdeu ${acao} sua escolha na porta ${finalChoice + 1}. O fusca estava na porta ${prizeDoor + 1}.`;
-    playLoseSound();
+    message.textContent = "Você ficou com a cabra!";
+    playAudio("sons/faustao.mp3");
   }
 
-  restartBtn.style.display = "inline-block";
-  modeSwitchBtn.disabled = false;
-  
-  
-  lastPrizeDoorPrev = prizeDoor;
+  message.style.display = "inline-block";  // <-- mostra só no final
+  restartButton.style.display = "inline-block";
 }
 
-function playWinSound() {
-  try {
-    stopAllSounds();
-    winSound.play();
-    setTimeout(() => {
-      winSound.pause();
-      winSound.currentTime = 0;
-    }, 3000); 
-  } catch (error) {
-    console.log("Erro ao reproduzir som de vitória:", error);
-  }
+function playAudio(src) {
+  const audio = new Audio(src);
+  audio.play();
+  setTimeout(() => {
+    audio.pause();
+    audio.currentTime = 0;
+  }, 3000); 
 }
 
-function playLoseSound() {
-  try {
-    stopAllSounds();
-    loseSound.play();
-    setTimeout(() => {
-      loseSound.pause();
-      loseSound.currentTime = 0;
-    }, 4000); 
-  } catch (error) {
-    console.log("Erro ao reproduzir som de derrota:", error);
-  }
-}
+doors.forEach((door, index) => {
+  door.addEventListener("click", () => {
+    if (gameEnded) return;
 
-function stopAllSounds() {
-  winSound.pause();
-  winSound.currentTime = 0;
-  loseSound.pause();
-  loseSound.currentTime = 0;
-}
-
-
-modeSwitchBtn.addEventListener("click", () => {
-  noRepeatMode = !noRepeatMode;
-  modeSwitchBtn.textContent = noRepeatMode 
-    ? "Modo: NÃO REPETE porta" 
-    : "Modo: CLÁSSICO (aleatório)";
+    if (selectedDoor === null) {
+      selectedDoor = index;
+      instruction.textContent = `Você escolheu a Porta ${index + 1}. Aguarde...`;
+      revealGoatDoor();
+    } else if (index !== revealedDoor) {
+      endGame(index);
+    }
+  });
 });
 
+restartButton.addEventListener("click", initGame);
 
-doors.forEach(door => door.addEventListener("click", onDoorClick));
-restartBtn.addEventListener("click", startGame);
+modeSwitch.addEventListener("click", () => {
+  mode = mode === "classic" ? "no-repeat" : "classic";
+  modeSwitch.textContent =
+    mode === "classic"
+      ? "Modo: CLÁSSICO (aleatório)"
+      : "Modo: NÃO REPETE (sem repetição)";
+  initGame();
+});
 
-
-startGame();
+initGame();
