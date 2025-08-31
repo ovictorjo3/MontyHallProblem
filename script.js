@@ -1,5 +1,6 @@
 let prizeDoor;
 let lastPrizeDoor = null;   
+let lastPrizeDoorPrev = null; // porta do carro da rodada anterior para o modo não repete
 let noRepeatMode = false;   
 
 let chosenDoor = null;
@@ -65,9 +66,14 @@ function onDoorClick(e) {
     chosenDoor = i;
     doors[chosenDoor].style.backgroundColor = "#a0e6a0";
 
-    do {
-      revealedDoor = Math.floor(Math.random() * 3);
-    } while (revealedDoor === chosenDoor || revealedDoor === prizeDoor);
+    let availableDoors = [0,1,2].filter(d => d !== chosenDoor && d !== prizeDoor);
+
+    // Forçar cabra na porta que tinha o carro na rodada anterior
+    if (noRepeatMode && lastPrizeDoorPrev !== null && availableDoors.includes(lastPrizeDoorPrev)) {
+      revealedDoor = lastPrizeDoorPrev; 
+    } else {
+      revealedDoor = availableDoors[Math.floor(Math.random() * availableDoors.length)];
+    }
 
     doors[revealedDoor].style.backgroundColor = "#f28c8c";
     doors[revealedDoor].querySelector("img").src = "imagens/cabra.png";
@@ -133,6 +139,9 @@ function endGame(finalChoice) {
 
   restartBtn.style.display = "inline-block";
   modeSwitchBtn.disabled = false;
+  
+  // Atualiza lastPrizeDoorPrev para a próxima rodada
+  lastPrizeDoorPrev = prizeDoor;
 }
 
 function playWinSound() {
