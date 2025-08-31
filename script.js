@@ -1,6 +1,6 @@
 let prizeDoor;
 let lastPrizeDoor = null;   
-let lastPrizeDoorPrev = null; // porta do carro da rodada anterior para o modo não repete
+let lastPrizeDoorPrev = null; 
 let noRepeatMode = false;   
 
 let chosenDoor = null;
@@ -24,7 +24,7 @@ loseSound.volume = 0.9;
 
 function startGame() {
   if (noRepeatMode && lastPrizeDoor !== null) {
-    // evita repetir a porta premiada
+    
     do {
       prizeDoor = Math.floor(Math.random() * 3);
     } while (prizeDoor === lastPrizeDoor);
@@ -140,7 +140,7 @@ function endGame(finalChoice) {
   restartBtn.style.display = "inline-block";
   modeSwitchBtn.disabled = false;
   
-  // Atualiza lastPrizeDoorPrev para a próxima rodada
+  
   lastPrizeDoorPrev = prizeDoor;
 }
 

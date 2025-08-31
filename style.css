@@ -160,6 +160,7 @@ button:disabled {
   position: relative;
   z-index: 10;
   overflow: hidden;
+  transition: box-shadow 0.4s ease;
 }
 
 #credits .footer-hidden {
@@ -168,11 +169,31 @@ button:disabled {
   font-size: 1.2em;
   margin-top: 8px;
   transition: opacity 0.4s ease;
-  color: #ffdd57;
+  color: #ffd966;
+  text-shadow: 0 0 3px #ffd966, 0 0 6px #ffd966;
+  display: block;
+  line-height: 1.4em;
+  text-align: center;
+}
+
+#credits:hover {
+  box-shadow: 0 -3px 15px rgba(255, 221, 87, 0.8), 0 -3px 20px rgba(255, 221, 87, 0.5);
 }
 
 #credits:hover .footer-hidden {
   opacity: 1;
+  animation: glow 1.5s infinite;
+}
+
+
+@keyframes glow {
+  0% { text-shadow: 0 0 5px #ffdd57, 0 0 10px #ffdd57; }
+  50% { text-shadow: 0 0 8px #ffdd57, 0 0 15px #ffdd57; }
+  100% { text-shadow: 0 0 5px #ffdd57, 0 0 10px #ffdd57; }
+}
+
+#credits:hover .footer-hidden {
+  animation: glow 1.5s infinite;
 }
 
 #credits a {
