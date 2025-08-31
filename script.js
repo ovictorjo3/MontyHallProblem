@@ -9,7 +9,7 @@ let selectedDoor = null;
 let gameEnded = false;
 let mode = "classic"; // "classic", "no-repeat", "super-hard"
 let lastCarPosition = null;
-let lastRevealedDoor = null; // 🚪 armazenar a última porta revelada
+let lastRevealedDoor = null; 
 
 function initGame() {
   gameEnded = false;
@@ -150,20 +150,17 @@ restartButton.addEventListener("click", initGame);
 modeSwitch.addEventListener("click", () => {
   if (mode === "classic") {
     mode = "no-repeat";
+    modeSwitch.textContent = "Modo: NÃO REPETE (trapaceiro leve)";
+    document.body.className = "norepeat";
   } else if (mode === "no-repeat") {
     mode = "super-hard";
-    document.body.classList.add("super-hard-mode");
+    modeSwitch.textContent = "Modo: SUPER DIFÍCIL (sem revelação)";
+    document.body.className = "superhard";
   } else {
     mode = "classic";
-    document.body.classList.remove("super-hard-mode");
+    modeSwitch.textContent = "Modo: CLÁSSICO (aleatório)";
+    document.body.className = "classico";
   }
-
-  modeSwitch.textContent =
-    mode === "classic"
-      ? "Modo: CLÁSSICO (aleatório)"
-      : mode === "no-repeat"
-        ? "Modo: NÃO REPETE (trapaceiro leve)"
-        : "Modo: SUPER DIFÍCIL (sem revelação)";
   initGame();
 });
 

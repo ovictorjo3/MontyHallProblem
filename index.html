@@ -6,56 +6,58 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Problema de Monty Hall</h1>
+  <main class="game-container">
+    <h1>Problema de Monty Hall</h1>
 
-  <h2>
-    Três portas, um fusca e duas cabras. Você faz a sua escolha e descobre se a sorte está do seu lado.  
-    O jogo possui três variações:  
-    <br><br>
-    • <strong>CLÁSSICO</strong>: tudo é aleatório, como no problema original.  
-    <br>
-    • <strong>NÃO REPETE</strong>: o prêmio nunca aparece na mesma porta de duas rodadas seguidas. Um truque leve para confundir o jogador.  
-    <br>
-    • <strong>SUPER DIFÍCIL</strong>: aqui não tem moleza. O carro nunca estará na porta escolhida de primeira, e o apresentador não revela nenhuma cabra. 
-    Você só vence se trocar na hora certa, puramente na sorte.  
-    <br><br>
-    Se encontrar o carro, a voz inconfundível de <strong>Silvio Santos</strong> comemora com você. Mas, se errar, prepare-se para ouvir o icônico 
-    <strong>“ERROU!” do Faustão</strong>.  
-    Eis uma abordagem BR a um clássico programa dos Estados Unidos (Vale lembrar: 
-    <strong>O Brasil é dos brasileiros</strong>), mostrando que aqui a diversão tem nosso jeito e nosso espírito.  
-  </h2>
+    <h2>
+      Três portas, um fusca e duas cabras. Você faz a sua escolha e descobre se a sorte está do seu lado.  
+      O jogo possui três variações:  
+      <br><br>
+      • <strong>CLÁSSICO</strong>: tudo é aleatório, como no problema original.  
+      <br>
+      • <strong>NÃO REPETE</strong>: o prêmio nunca aparece na mesma porta de duas rodadas seguidas. Um truque leve para confundir o jogador.  
+      <br>
+      • <strong>SUPER DIFÍCIL</strong>: aqui não tem moleza. O carro nunca estará na porta escolhida de primeira, e o apresentador não revela nenhuma cabra. 
+      Você só vence se trocar na hora certa, puramente na sorte.  
+      <br><br>
+      Se encontrar o carro, a voz inconfundível de <strong>Silvio Santos</strong> comemora com você. Mas, se errar, prepare-se para ouvir o icônico 
+      <strong>“ERROU!” do Faustão</strong>.  
+      Eis uma abordagem BR a um clássico programa dos Estados Unidos (Vale lembrar: 
+      <strong>O Brasil é dos brasileiros</strong>), mostrando que aqui a diversão tem nosso jeito e nosso espírito.  
+    </h2>
 
-  <p id="instruction">Escolha uma porta clicando nela!</p>
+    <p id="instruction">Escolha uma porta clicando nela!</p>
 
-  <div id="game">
-    <div class="door-container">
-      <div class="door" data-index="0">
-        <img src="imagens/porta.png" alt="Porta 1">
+    <div id="game">
+      <div class="door-container">
+        <div class="door" data-index="0">
+          <img src="imagens/porta.png" alt="Porta 1">
+        </div>
+        <p class="door-label">Porta 1</p>
       </div>
-      <p class="door-label">Porta 1</p>
+
+      <div class="door-container">
+        <div class="door" data-index="1">
+          <img src="imagens/porta.png" alt="Porta 2">
+        </div>
+        <p class="door-label">Porta 2</p>
+      </div>
+
+      <div class="door-container">
+        <div class="door" data-index="2">
+          <img src="imagens/porta.png" alt="Porta 3">
+        </div>
+        <p class="door-label">Porta 3</p>
+      </div>
     </div>
 
-    <div class="door-container">
-      <div class="door" data-index="1">
-        <img src="imagens/porta.png" alt="Porta 2">
-      </div>
-      <p class="door-label">Porta 2</p>
+    <div id="message"></div>
+
+    <div id="controls">
+      <button id="restart" style="display:none;">Reiniciar</button>
+      <button id="modeSwitch">Modo: CLÁSSICO (aleatório)</button>
     </div>
-
-    <div class="door-container">
-      <div class="door" data-index="2">
-        <img src="imagens/porta.png" alt="Porta 3">
-      </div>
-      <p class="door-label">Porta 3</p>
-    </div>
-  </div>
-
-  <div id="message"></div>
-
-  <div id="controls">
-    <button id="restart" style="display:none;">Reiniciar</button>
-    <button id="modeSwitch">Modo: CLÁSSICO (aleatório)</button>
-  </div>
+  </main>
 
   <footer id="credits">
     Esse jogo foi desenvolvido pelo <a href="https://github.com/ovictorjo" target="_blank">ovictorjo</a>, 
