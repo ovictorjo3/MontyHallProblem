@@ -35,7 +35,10 @@ function initGame() {
     } while (carPosition === lastCarPosition);
     lastCarPosition = carPosition;
   }
+  console.log(`Posição do carro: ${carPosition + 1}`);
 }
+
+
 
 function revealGoatDoor() {
   const possibleDoors = [0, 1, 2].filter(
