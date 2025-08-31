@@ -27,31 +27,31 @@ function initGame() {
   restartButton.style.display = "none";
 
   if (mode === "classic") {
-    // carro definido já no início
+    
     carPosition = Math.floor(Math.random() * 3);
     console.log(`(CLÁSSICO) Posição do carro: ${carPosition + 1}`);
   } else {
-    // modo trapaceiro: ainda não define carro
+    
     carPosition = null;
     console.log("(NO-REPEAT / TRAPACEIRO) Carro ainda não definido!");
   }
 }
 
 function revealGoatDoor() {
-  // Se ainda não definiu carro (modo trapaceiro), define agora
+  
   if (mode !== "classic" && carPosition === null) {
     const outras = [0, 1, 2].filter(p => p !== selectedDoor);
 
     const sorte = Math.random();
-    if (sorte < 0.7) {
-      // 70% de chance: carro em outra porta (trocar é melhor)
+    if (sorte < 0.3) {
+      
       carPosition = outras[Math.floor(Math.random() * outras.length)];
     } else {
-      // 30% de chance: carro fica na escolhida
+      
       carPosition = selectedDoor;
     }
 
-    // garantir que não repita posição da rodada anterior
+    
     if (carPosition === lastCarPosition) {
       const alternativas = [0, 1, 2].filter(p => p !== lastCarPosition);
       carPosition = alternativas[Math.floor(Math.random() * alternativas.length)];
@@ -61,7 +61,7 @@ function revealGoatDoor() {
     console.log(`(TRAPACEIRO) Posição do carro definida: ${carPosition + 1}`);
   }
 
-  // revelar cabra como sempre
+  
   const possibleDoors = [0, 1, 2].filter(
     d => d !== carPosition && d !== selectedDoor
   );
