@@ -61,6 +61,9 @@ function revealGoatDoor() {
 function endGame(finalChoice) {
   gameEnded = true;
 
+  // mostra no texto qual foi a escolha final
+  instruction.textContent = `Sua escolha final é a Porta ${finalChoice + 1}.`;
+
   doors.forEach((door, index) => {
     door.classList.remove("active", "winner", "revealed");
 
@@ -74,7 +77,7 @@ function endGame(finalChoice) {
   });
 
   if (finalChoice === carPosition) {
-    message.textContent = "Você ganhou o carro!";
+    message.textContent = "Você encontrou o fusca!";
     playAudio("sons/silvio.mp3");
   } else {
     message.textContent = "Você ficou com a cabra!";
@@ -84,6 +87,7 @@ function endGame(finalChoice) {
   message.style.display = "inline-block";  // <-- mostra só no final
   restartButton.style.display = "inline-block";
 }
+
 
 function playAudio(src) {
   const audio = new Audio(src);
