@@ -239,3 +239,102 @@ button:disabled {
   .door-label { margin-top: 10px; font-size: 1em; }
   button { padding: 12px 20px; font-size: 1em; }
 }
+
+/* SUPER HARD MODE: atmosfera mais sombria */
+body.super-hard-mode {
+  background: linear-gradient(to bottom, #1a1a1a, #000000);
+  color: #f5f5f5;
+}
+
+body.super-hard-mode h1 {
+  color: #ff4444;
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+}
+
+body.super-hard-mode h2 {
+  background: rgba(20, 20, 20, 0.8);
+  color: #ddd;
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.2);
+}
+
+body.super-hard-mode #instruction {
+  color: #ff6666;
+  text-shadow: 0 0 6px rgba(255, 100, 100, 0.6);
+}
+
+body.super-hard-mode .door {
+  animation: flicker 2s infinite alternate;
+}
+
+body.super-hard-mode .door:hover {
+  border-color: #ff4444;
+  box-shadow: 0 0 20px rgba(255, 68, 68, 0.8);
+}
+
+@keyframes flicker {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(0.6); }
+  100% { filter: brightness(1); }
+}
+
+body.super-hard-mode .door-label {
+  background: rgba(0,0,0,0.7);
+  color: #ff4444;
+  text-shadow: 0 0 5px rgba(255,68,68,0.8);
+}
+
+body.super-hard-mode button {
+  background-color: #ff4444;
+  box-shadow: 0 4px 10px rgba(255,68,68,0.4);
+}
+
+body.super-hard-mode button:hover:not(:disabled) {
+  background-color: #cc0000;
+  box-shadow: 0 6px 15px rgba(255,0,0,0.6);
+}
+
+body.super-hard-mode #message {
+  background: rgba(20, 20, 20, 0.9);
+  color: #ffcccc;
+  border: 2px solid #ff4444;
+}
+
+body.super-hard-mode #credits {
+  background-color: #111;
+  color: #ff4444;
+  box-shadow: 0 -3px 15px rgba(255,68,68,0.6);
+}
+
+body.super-hard-mode #credits a {
+  color: #ff9999;
+}
+
+body.super-hard-mode #credits .footer-hidden {
+  color: #ff4444;
+  text-shadow: 0 0 6px #ff4444, 0 0 10px #cc0000;
+}
+
+body.flash {
+  animation: redFlash 0.5s ease;
+}
+
+@keyframes redFlash {
+  0% { background-color: #ff0000; }
+  100% { background-color: #000000; }
+}
+
+.door.revealed img {
+  animation: abrirPorta 0.8s ease forwards;
+}
+
+@keyframes abrirPorta {
+  0% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.1); /* porta fechando */
+  }
+  100% {
+    transform: scaleX(1); /* mostra cabra */
+  }
+}
