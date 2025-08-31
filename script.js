@@ -25,7 +25,7 @@ function initGame() {
   instruction.textContent = "Escolha uma porta clicando nela!";
   restartButton.style.display = "none";
 
-  // reset flash se estiver no super-hard
+  
   document.body.classList.remove("flash");
 
   if (mode === "classic") {
@@ -43,7 +43,7 @@ function revealGoatDoor() {
 
   let portaRevelada = cabras[Math.floor(Math.random() * cabras.length)];
 
-  // No modo "no-repeat", não repetir a porta revelada da última rodada
+  
   if (mode === "no-repeat" && lastRevealedDoor !== null && cabras.length > 1) {
     while (portaRevelada === lastRevealedDoor) {
       portaRevelada = cabras[Math.floor(Math.random() * cabras.length)];
@@ -53,12 +53,12 @@ function revealGoatDoor() {
   const door = doors[portaRevelada];
   door.classList.add("revealed");
 
-  // animação antes de trocar a imagem
+  
   setTimeout(() => {
     door.innerHTML = `<img src="imagens/cabra.png" alt="Cabra">`;
   }, 400);
 
-  lastRevealedDoor = portaRevelada; // salvar porta revelada
+  lastRevealedDoor = portaRevelada; 
   console.log(`Apresentador revelou a porta ${portaRevelada + 1} (cabra).`);
 }
 
@@ -106,7 +106,7 @@ function endGame(finalChoice) {
     message.textContent = "Você ficou com a cabra!";
     playAudio("sons/faustao.mp3");
 
-    // ⚡ flash/jumpscare só no super-hard
+    
     if (mode === "super-hard") {
       document.body.classList.add("flash");
       setTimeout(() => {
@@ -135,7 +135,7 @@ doors.forEach((door, index) => {
       selectedDoor = index;
       instruction.textContent = `Você escolheu a Porta ${index + 1}. Clique novamente para confirmar!`;
 
-      // 👉 revelar porta do apresentador, exceto no super-hard
+      
       if (mode !== "super-hard") {
         revealGoatDoor();
       }

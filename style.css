@@ -201,14 +201,14 @@ body.norepeat {
   background: linear-gradient(to bottom, #fff7e6, #ffd480);
 }
 
-/* 🌑 SUPER HARD MODE - Vermelho sombrio */
+
 body.superhard {
   background: linear-gradient(to bottom, #2b0000, #5c0000, #8b0000);
   color: #e6e6e6;
   font-family: Arial, sans-serif;
 }
 
-/* 🔥 Títulos */
+
 body.superhard h1 {
   color: #ff3333; 
   text-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
