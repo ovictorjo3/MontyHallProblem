@@ -21,26 +21,47 @@ function initGame() {
     door.innerHTML = `<img src="imagens/porta.png" alt="Porta">`;
   });
 
-  message.style.display = "none";   // <-- oculta no início
+  message.style.display = "none";
   message.textContent = "";
   instruction.textContent = "Escolha uma porta clicando nela!";
   restartButton.style.display = "none";
 
-  // Definir posição do carro
   if (mode === "classic") {
+    // carro definido já no início
     carPosition = Math.floor(Math.random() * 3);
+    console.log(`(CLÁSSICO) Posição do carro: ${carPosition + 1}`);
   } else {
-    do {
-      carPosition = Math.floor(Math.random() * 3);
-    } while (carPosition === lastCarPosition);
-    lastCarPosition = carPosition;
+    // modo trapaceiro: ainda não define carro
+    carPosition = null;
+    console.log("(NO-REPEAT / TRAPACEIRO) Carro ainda não definido!");
   }
-  console.log(`Posição do carro: ${carPosition + 1}`);
 }
 
-
-
 function revealGoatDoor() {
+  // Se ainda não definiu carro (modo trapaceiro), define agora
+  if (mode !== "classic" && carPosition === null) {
+    const outras = [0, 1, 2].filter(p => p !== selectedDoor);
+
+    const sorte = Math.random();
+    if (sorte < 0.7) {
+      // 70% de chance: carro em outra porta (trocar é melhor)
+      carPosition = outras[Math.floor(Math.random() * outras.length)];
+    } else {
+      // 30% de chance: carro fica na escolhida
+      carPosition = selectedDoor;
+    }
+
+    // garantir que não repita posição da rodada anterior
+    if (carPosition === lastCarPosition) {
+      const alternativas = [0, 1, 2].filter(p => p !== lastCarPosition);
+      carPosition = alternativas[Math.floor(Math.random() * alternativas.length)];
+    }
+
+    lastCarPosition = carPosition;
+    console.log(`(TRAPACEIRO) Posição do carro definida: ${carPosition + 1}`);
+  }
+
+  // revelar cabra como sempre
   const possibleDoors = [0, 1, 2].filter(
     d => d !== carPosition && d !== selectedDoor
   );
@@ -50,7 +71,6 @@ function revealGoatDoor() {
   door.classList.add("revealed");
   door.innerHTML = `<img src="imagens/cabra.png" alt="Cabra">`;
 
-  // encontrar a outra porta que sobrou
   const otherDoor = [0, 1, 2].find(
     d => d !== selectedDoor && d !== revealedDoor
   );
@@ -61,17 +81,16 @@ function revealGoatDoor() {
 function endGame(finalChoice) {
   gameEnded = true;
 
-  // mostra no texto qual foi a escolha final
   instruction.textContent = `Sua escolha final é a Porta ${finalChoice + 1}.`;
 
   doors.forEach((door, index) => {
     door.classList.remove("active", "winner", "revealed");
 
     if (index === carPosition) {
-      door.classList.add("winner"); // verde
+      door.classList.add("winner");
       door.innerHTML = `<img src="imagens/carro.png" alt="Carro">`;
     } else {
-      door.classList.add("revealed"); // vermelho
+      door.classList.add("revealed");
       door.innerHTML = `<img src="imagens/cabra.png" alt="Cabra">`;
     }
   });
@@ -84,10 +103,9 @@ function endGame(finalChoice) {
     playAudio("sons/faustao.mp3");
   }
 
-  message.style.display = "inline-block";  // <-- mostra só no final
+  message.style.display = "inline-block";
   restartButton.style.display = "inline-block";
 }
-
 
 function playAudio(src) {
   const audio = new Audio(src);
@@ -119,7 +137,7 @@ modeSwitch.addEventListener("click", () => {
   modeSwitch.textContent =
     mode === "classic"
       ? "Modo: CLÁSSICO (aleatório)"
-      : "Modo: NÃO REPETE (sem repetição)";
+      : "Modo: NÃO REPETE (trapaceiro)";
   initGame();
 });
 
