@@ -8,7 +8,7 @@ let carPosition;
 let selectedDoor = null;
 let revealedDoor = null;
 let gameEnded = false;
-let mode = "classic"; // "classic" ou "no-repeat"
+let mode = "classic"; // "classic", "no-repeat", "super-hard"
 let lastCarPosition = null;
 
 function initGame() {
@@ -27,41 +27,53 @@ function initGame() {
   restartButton.style.display = "none";
 
   if (mode === "classic") {
-    
+    // carro definido já no início
     carPosition = Math.floor(Math.random() * 3);
     console.log(`(CLÁSSICO) Posição do carro: ${carPosition + 1}`);
   } else {
-    
+    // nos modos trapaceiros, carro ainda não definido
     carPosition = null;
-    console.log("(NO-REPEAT / TRAPACEIRO) Carro ainda não definido!");
+    console.log(`(${mode.toUpperCase()}) Carro ainda não definido!`);
   }
 }
 
 function revealGoatDoor() {
-  
-  if (mode !== "classic" && carPosition === null) {
+  if (carPosition === null) {
     const outras = [0, 1, 2].filter(p => p !== selectedDoor);
 
-    const sorte = Math.random();
-    if (sorte < 0.3) {
-      
-      carPosition = outras[Math.floor(Math.random() * outras.length)];
-    } else {
-      
-      carPosition = selectedDoor;
-    }
+    if (mode === "no-repeat") {
+      // TRAPACEIRO LEVE
+      const sorte = Math.random();
+      if (sorte < 0.3) {
+        carPosition = outras[Math.floor(Math.random() * outras.length)];
+      } else {
+        carPosition = selectedDoor;
+      }
 
-    
-    if (carPosition === lastCarPosition) {
-      const alternativas = [0, 1, 2].filter(p => p !== lastCarPosition);
-      carPosition = alternativas[Math.floor(Math.random() * alternativas.length)];
-    }
+      // não repetir posição anterior
+      if (carPosition === lastCarPosition) {
+        const alternativas = [0, 1, 2].filter(p => p !== lastCarPosition);
+        carPosition = alternativas[Math.floor(Math.random() * alternativas.length)];
+      }
 
-    lastCarPosition = carPosition;
-    console.log(`(TRAPACEIRO) Posição do carro definida: ${carPosition + 1}`);
+      lastCarPosition = carPosition;
+      console.log(`(NO-REPEAT) Posição do carro definida: ${carPosition + 1}`);
+
+    } else if (mode === "super-hard") {
+      // TRAPACEIRO PESADO
+      const sorte = Math.random();
+      if (sorte < 0.2) {
+        // só 20% chance de o jogador acertar direto
+        carPosition = selectedDoor;
+      } else {
+        // 80% vai para outra porta
+        carPosition = outras[Math.floor(Math.random() * outras.length)];
+      }
+      console.log(`(SUPER-HARD) Carro definido: ${carPosition + 1}`);
+    }
   }
 
-  
+  // revelar cabra
   const possibleDoors = [0, 1, 2].filter(
     d => d !== carPosition && d !== selectedDoor
   );
@@ -133,11 +145,21 @@ doors.forEach((door, index) => {
 restartButton.addEventListener("click", initGame);
 
 modeSwitch.addEventListener("click", () => {
-  mode = mode === "classic" ? "no-repeat" : "classic";
+  // alterna entre os 3 modos
+  if (mode === "classic") {
+    mode = "no-repeat";
+  } else if (mode === "no-repeat") {
+    mode = "super-hard";
+  } else {
+    mode = "classic";
+  }
+
   modeSwitch.textContent =
     mode === "classic"
       ? "Modo: CLÁSSICO (aleatório)"
-      : "Modo: NÃO REPETE (trapaceiro)";
+      : mode === "no-repeat"
+        ? "Modo: NÃO REPETE (trapaceiro leve)"
+        : "Modo: SUPER DIFÍCIL (trapaceiro máximo)";
   initGame();
 });
 
